@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText etAskQuestion;
     Button buttonSubmitQuestion;
+    Button buttonBrowseQuestion;
 
     DatabaseReference questionDBRef;
 
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         etAskQuestion = findViewById(R.id.etAskQuestion);
         buttonSubmitQuestion = findViewById(R.id.buttonSubmitQuestion);
+        buttonBrowseQuestion = findViewById(R.id.buttonBrowseQuestion);
 
         questionDBRef = FirebaseDatabase.getInstance().getReference().child("Questions");
 
@@ -49,12 +51,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        buttonBrowseQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, RetrieveDataActivity.class));
+                // setContentView(R.layout.activity_retrieve_data);
+                //open the data retreiving activity using Intents
+            }
+        });
+
     }
 
     private void insertQuestionData() {
         String question = etAskQuestion.getText().toString();
+        String answer = "Answer";
 
-        Questions questions = new Questions(question);
+        Questions questions = new Questions(question, answer);
 
         questionDBRef.push().setValue(questions);
         Toast.makeText(MainActivity.this, "Question Added", Toast.LENGTH_SHORT).show();
