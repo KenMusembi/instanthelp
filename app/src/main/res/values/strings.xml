@@ -13,4 +13,5 @@
     <string name="answer">answer</string>
     <string name="browse_questions">Browse Questions</string>
     <string name="submit_question">Submit Question</string>
+    <string name="update_question">Update Question</string>
 </resources>

@@ -64,9 +64,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void insertQuestionData() {
         String question = etAskQuestion.getText().toString();
-        String answer = "Answer";
+       // String id = null;
 
-        Questions questions = new Questions(question, answer);
+        Questions questions = new Questions( question);
 
         questionDBRef.push().setValue(questions);
         Toast.makeText(MainActivity.this, "Question Added", Toast.LENGTH_SHORT).show();
