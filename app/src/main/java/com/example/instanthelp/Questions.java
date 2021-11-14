@@ -3,21 +3,28 @@ package com.example.instanthelp;
 public class Questions {
 
     String question;
-    String answer;
+    //String id;
 
     //added this empty constructor because it was not
     //letting the line on retrieve class 46 display
     public Questions() {}
 
-    public Questions(String question, String answer) {
+    public Questions(String question) {
         this.question = question;
-        this.answer = answer;
+     //   this.id = id;
     }
+
+
+
+
     public String getQuestion() {
         return question;
     }
-    public String getAnswer() {
-        return answer;
-    }
+
+
+//    public String getId() {
+//        return id;
+//    }
+
 
 }
