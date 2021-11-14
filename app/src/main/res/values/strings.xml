@@ -14,4 +14,15 @@
     <string name="browse_questions">Browse Questions</string>
     <string name="submit_question">Submit Question</string>
     <string name="update_question">Update Question</string>
+    <string name="remembered_password">Remembered Password?</string>
+    <string name="login">Login</string>
+    <string name="submit">SUBMIT</string>
+    <string name="email">Email</string>
+    <string name="forgot_password_screen">Forgot Password Screen</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="register_here">Register here</string>
+    <string name="not_registered_yet">Not registered yet?</string>
+    <string name="password">Password</string>
+
+
 </resources>
