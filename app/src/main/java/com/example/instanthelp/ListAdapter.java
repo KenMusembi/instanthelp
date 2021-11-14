@@ -34,12 +34,12 @@ public class ListAdapter extends ArrayAdapter {
         View listItemView = inflater.inflate(R.layout.questions_asked, null, true);
 
         TextView tvQuestion = listItemView.findViewById(R.id.tvQuestions);
-        TextView tvAnswer = listItemView.findViewById(R.id.tvAnswer);
+
 
         Questions questions = questionsList.get(position);
 
         tvQuestion.setText(questions.getQuestion());
-        //tvAnswer.setText(questions.getAnswer());
+
         return listItemView;
         // super.getView(position, convertView, parent);
     }

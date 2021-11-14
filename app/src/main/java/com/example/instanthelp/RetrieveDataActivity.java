@@ -101,10 +101,7 @@ public class RetrieveDataActivity extends AppCompatActivity {
                 //now get values from view
 
                 String newQuestion = etUpdateQuestion.getText().toString();
-                //String newAnswer = '';
-
                 updateData( newQuestion);
-
                 Toast.makeText(RetrieveDataActivity.this, "Question Updated",Toast.LENGTH_SHORT).show();
 
             }
