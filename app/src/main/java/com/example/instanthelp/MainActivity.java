@@ -1,18 +1,23 @@
 package com.example.instanthelp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -23,109 +28,92 @@ import com.google.mlkit.nl.smartreply.SmartReplySuggestion;
 import com.google.mlkit.nl.smartreply.SmartReplySuggestionResult;
 import com.google.mlkit.nl.smartreply.TextMessage;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Url;
+
 public class MainActivity extends AppCompatActivity {
 
-    Button btnLogOut;
-    FirebaseAuth mAuth;
+    private RecyclerView chatsRV;
+    private EditText userMsgEdt;
+    private ImageButton sendMsgFAB;
+    private final String BOT_KEY = "bot";
+    private final String USER_KEY = "user";
 
-    EditText etAskQuestion;
-    Button buttonSubmitQuestion;
-    Button buttonBrowseQuestion;
-    TextView textViewReply;
+    //private RequestQueue mRequestQueue;
 
-    List<TextMessage> conversation;
-    String userUID="123456";//on production app its come from user uid
-    SmartReplyGenerator smartReplyGenerator;
-    DatabaseReference questionDBRef;
+    private ArrayList<ChatsModel> chatsModelArrayList;
+    private ChatRVAdapter chatRVAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_chatbot);
 
-        btnLogOut = findViewById(R.id.btnLogout);
-        mAuth = FirebaseAuth.getInstance();
+        chatsRV = findViewById(R.id.idRVChats);
+        userMsgEdt = findViewById(R.id.idEdtMessage);
+        sendMsgFAB = findViewById(R.id.idFABSend);
 
-        btnLogOut.setOnClickListener(view ->{
-            mAuth.signOut();
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-        });
+        chatsModelArrayList = new ArrayList<>();
+        chatRVAdapter = new ChatRVAdapter(chatsModelArrayList, this);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        chatsRV.setLayoutManager(manager);
+        chatsRV.setAdapter(chatRVAdapter);
 
-        etAskQuestion = findViewById(R.id.etAskQuestion);
-        buttonSubmitQuestion = findViewById(R.id.buttonSubmitQuestion);
-        buttonBrowseQuestion = findViewById(R.id.buttonBrowseQuestion);
-        textViewReply = findViewById(R.id.tvReply);
-
-        conversation = new ArrayList<>();
-        smartReplyGenerator = SmartReply.getClient();
-
-
-
-        questionDBRef = FirebaseDatabase.getInstance().getReference().child("Questions");
-
-        buttonSubmitQuestion.setOnClickListener(new View.OnClickListener() {
-            @Override
-
-                public void onClick(View v) {
-                //insertQuestionData();
-                String message = etAskQuestion.getText().toString().trim();
-                conversation.add(TextMessage.createForRemoteUser(message, System.currentTimeMillis(), userUID));
-                smartReplyGenerator.suggestReplies(conversation).addOnSuccessListener(new OnSuccessListener<SmartReplySuggestionResult>() {
-                    @Override
-                    public void onSuccess(@NonNull SmartReplySuggestionResult smartReplySuggestionResult) {
-                        if(smartReplySuggestionResult.getStatus()==SmartReplySuggestionResult.STATUS_NOT_SUPPORTED_LANGUAGE){
-                            //the conversations language is not supported
-                            //the result does not contain any suggestions
-                            textViewReply.setText("No Reply");
-                        }else if(smartReplySuggestionResult.getStatus()==SmartReplySuggestionResult.STATUS_SUCCESS){
-                            String reply ="";
-                            for(SmartReplySuggestion suggestion:smartReplySuggestionResult.getSuggestions()){
-                                reply= reply + suggestion.getText()+"\n";
-                                textViewReply.setText(reply);
-                            }
-                        } else {
-                            textViewReply.setText("Sorry we do not have an answer to that yet.");
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        textViewReply.setText("Error :"+e.getMessage());
-                    }
-                });
-
-
-            }
-        });
-
-        buttonBrowseQuestion.setOnClickListener(new View.OnClickListener() {
+        sendMsgFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, RetrieveDataActivity.class));
-                // setContentView(R.layout.activity_retrieve_data);
-                //open the data retreiving activity using Intents
+                if(userMsgEdt.getText().toString().isEmpty()){
+                    Toast.makeText(MainActivity.this, "Please enter your message", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                getResponse(userMsgEdt.getText().toString());
+                userMsgEdt.setText("");
             }
         });
 
     }
+    private void getResponse(String message){
+        chatsModelArrayList.add(new ChatsModel(message, USER_KEY));
+        chatRVAdapter.notifyDataSetChanged();
+        String url = "http://api.brainshop.ai/get?bid=161555&key=Bgc0Zn95r2hNj9md&uid=[uid]&msg="+message;
+        String BASE_URL = "http://api.brainshop.ai/";
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        RetrofitAPI retrofitAPI = retrofit.create(RetrofitAPI.class);
+        Call<MSGModel> call = retrofitAPI.getMessage(url);
+        call.enqueue(new Callback<MSGModel>() {
+            @Override
+            public void onResponse(Call<MSGModel> call, Response<MSGModel> response) {
+                if(response.isSuccessful()){
+                    MSGModel model = response.body();
+                    chatsModelArrayList.add(new ChatsModel(model.getCnt(), BOT_KEY));
+                    chatRVAdapter.notifyDataSetChanged();
+                }else {
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        Toast.makeText(MainActivity.this, jObjError.getJSONObject("error").getString("message"), Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
 
-    private void insertQuestionData() {
-        String question = etAskQuestion.getText().toString();
-        Questions questions = new Questions( question);
-
-        questionDBRef.push().setValue(questions);
-        Toast.makeText(MainActivity.this, "Question Added", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user == null){
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-        }
+            @Override
+            public void onFailure(Call<MSGModel> call, Throwable t) {
+                chatsModelArrayList.add(new ChatsModel(t.getMessage() , BOT_KEY));
+                chatRVAdapter.notifyDataSetChanged();
+            }
+        });
     }
 }

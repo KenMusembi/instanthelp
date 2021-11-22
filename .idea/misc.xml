@@ -3,15 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.225" />
+        <entry key="app/src/main/res/layout/activity_chatbot.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.27025641025641023" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_retrieve_data.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/bot_msg_rv_item.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_second.xml" value="0.24682971014492755" />
         <entry key="app/src/main/res/layout/questions_asked.xml" value="0.1" />
         <entry key="app/src/main/res/layout/update_dialog.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/user_msg_rv_item.xml" value="0.335" />
+        <entry key="app/src/main/res/xml/network_security_config.xml" value="0.11875" />
       </map>
     </option>
   </component>

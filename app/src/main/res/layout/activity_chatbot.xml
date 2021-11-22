@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/idRVChats"
+        android:layout_above="@id/idRLMsg"/>
+
+    <LinearLayout
+        android:id="@+id/idRLMsg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:weightSum="5">
+
+        <EditText
+
+            android:id="@+id/idEdtMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:hint="Enter Message"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black" />
+
+        <!--button to send message-->
+        <ImageButton
+            android:id="@+id/idFABSend"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="@color/purple_200"
+            android:src="@android:drawable/ic_menu_send"
+            app:tint="@color/white" />
+
+
+    </LinearLayout>
+
+</RelativeLayout>
