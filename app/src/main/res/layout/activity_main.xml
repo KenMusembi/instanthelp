@@ -48,8 +48,8 @@
 
     <EditText
         android:id="@+id/etAskQuestion"
-        android:layout_width="351dp"
-        android:layout_height="197dp"
+        android:layout_width="352dp"
+        android:layout_height="105dp"
         android:ems="10"
         android:gravity="start|top"
         android:hint="Type Question Here"
