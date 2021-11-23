@@ -6,7 +6,7 @@
     android:layout_gravity="start"
     android:layout_margin="5dp"
     android:elevation="8dp"
-    app:cardBackgroundColor="@color/purple_200"
+    app:cardBackgroundColor="@color/blue"
     app:cardCornerRadius="8dp">
 
     <LinearLayout
@@ -14,9 +14,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_chatbot"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/chatbot"
             android:layout_margin="10dp"/>
         <TextView
             android:layout_width="match_parent"
@@ -26,7 +26,7 @@
             android:layout_margin="5dp"
             android:padding="3dp"
             android:text="Bot Message"
-            android:textColor="@color/black"/>
+            android:textColor="@color/white"/>
 
 
 

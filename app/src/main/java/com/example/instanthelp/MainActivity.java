@@ -42,6 +42,7 @@ import retrofit2.http.Url;
 
 public class MainActivity extends AppCompatActivity {
 
+    FirebaseAuth mAuth;
     private RecyclerView chatsRV;
     private EditText userMsgEdt;
     private ImageButton sendMsgFAB;
@@ -57,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatbot);
+
+        mAuth = FirebaseAuth.getInstance();
 
         chatsRV = findViewById(R.id.idRVChats);
         userMsgEdt = findViewById(R.id.idEdtMessage);
@@ -115,5 +118,14 @@ public class MainActivity extends AppCompatActivity {
                 chatRVAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null){
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        }
     }
 }
