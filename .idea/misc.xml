@@ -4,7 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.225" />
-        <entry key="app/src/main/res/layout/activity_chatbot.xml" value="0.335" />
+        <entry key="app/src/main/res/drawable/cursor.xml" value="0.30564102564102563" />
+        <entry key="app/src/main/res/drawable/ic_chatbot.xml" value="0.25885416666666666" />
+        <entry key="app/src/main/res/layout/activity_chatbot.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.27025641025641023" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
