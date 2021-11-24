@@ -8,12 +8,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -43,6 +46,7 @@ import retrofit2.http.Url;
 public class MainActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
+
     private RecyclerView chatsRV;
     private EditText userMsgEdt;
     private ImageButton sendMsgFAB;
@@ -58,6 +62,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatbot);
+
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+        myToolbar.showContextMenu(1, 1);
+        myToolbar.getMenu();
+
+        myToolbar.inflateMenu(R.menu.main_menu);
+
+        setSupportActionBar(myToolbar);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -128,4 +140,39 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_show_stories:
+                // User chose the "Settings" item, show the app settings UI...
+                //setContentView(R.layout.questions_asked);
+                startActivity(new Intent(MainActivity.this, RetrieveDataActivity.class));
+                return true;
+
+            case R.id.action_logout:
+                // User chose the "Favorite" action, mark the current item
+                // as a favorite...
+                //setContentView(R.layout.activity_login);
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+
+
+
 }
