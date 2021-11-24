@@ -1,6 +1,5 @@
 package com.example.instanthelp;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,28 +10,29 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import androidx.appcompat.app.AppCompatDialog;
+import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.appcompat.widget.Toolbar;
 
 import java.util.ArrayList;
-import java.util.EventListener;
 import java.util.List;
 
 public class RetrieveDataActivity extends AppCompatActivity {
@@ -84,20 +84,32 @@ public class RetrieveDataActivity extends AppCompatActivity {
 
         //set itemLong listener on listview item
 
-        myListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//        myListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+//                Questions questions = questionsList.get(position);
+//                showUpdateDialog( questions.getQuestion());
+//                return false;
+//            }
+//        });
+
+
+        ImageButton fab = findViewById(R.id.fabAddStory);
+        fab.setOnClickListener(new AdapterView.OnClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Questions questions = questionsList.get(position);
-                showUpdateDialog( questions.getQuestion());
-                return false;
+            public void onClick(View view) {
+//                Snackbar.make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+
+                showUpdateDialog( );
+               // return false;
             }
         });
 
 
 
-
     }
-    private void showUpdateDialog( String question){
+    private void showUpdateDialog( ){
         AlertDialog.Builder mDialog = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         View mDialogView = inflater.inflate(R.layout.update_dialog, null);
@@ -105,9 +117,9 @@ public class RetrieveDataActivity extends AppCompatActivity {
 
         //create views references
         EditText etUpdateQuestion = mDialogView.findViewById(R.id.etUpdateQuestion);
-        Button btnUpdate = mDialogView.findViewById(R.id.btnUpdate);
+        Button btnUpdate = mDialogView.findViewById(R.id.btnAdd);
 
-        mDialog.setTitle("Updating " + question + " question");
+        mDialog.setTitle("Tell us your story");
 
         mDialog.show();
 
@@ -119,10 +131,14 @@ public class RetrieveDataActivity extends AppCompatActivity {
 
                 String newQuestion = etUpdateQuestion.getText().toString();
                 updateData( newQuestion);
-                Toast.makeText(RetrieveDataActivity.this, "Question Updated",Toast.LENGTH_SHORT).show();
+                Toast.makeText(RetrieveDataActivity.this, "Story Added",Toast.LENGTH_SHORT).show();
+
 
             }
         });
+
+
+
     }
 
 
