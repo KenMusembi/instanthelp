@@ -9,13 +9,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@string/question"
-        android:hint="@string/question"/>
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+       android:padding="10dp"
+        android:layout_margin="10dp"
+        android:hint="Share, type your story here..."/>
 
     <Button
-        android:id="@+id/btnUpdate"
+        android:id="@+id/btnAdd"
+        android:padding="10dp"
+        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/update_question" />
+        android:background="@color/blue"
+        android:text="Add Story" />
+
 </LinearLayout>
