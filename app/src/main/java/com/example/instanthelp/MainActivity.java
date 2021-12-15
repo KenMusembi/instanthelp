@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_show_stories:
                 // User chose the "Settings" item, show the app settings UI...
-                //setContentView(R.layout.questions_asked);
+                //setContentView(R.layout.categories_listed);
                 startActivity(new Intent(MainActivity.this, RetrieveDataActivity.class));
                 return true;
 

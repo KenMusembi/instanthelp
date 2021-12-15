@@ -32,16 +32,14 @@
         <!--app:logo="@drawable/instanthelp"-->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/idRVChats"
-<<<<<<< HEAD
-=======
+
             android:padding="5dp"
             android:layout_margin="1dp"
->>>>>>> refs/remotes/origin/main
+
 
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@id/idRLMsg" />
-
+            android:layout_height="match_parent"/>
+            <!-- android:layout_above="@id/idRLMsg" -->
 
     </LinearLayout>
 
@@ -51,14 +49,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-<<<<<<< HEAD
-        android:orientation="horizontal"
-        >
-=======
 
         android:orientation="horizontal"
-       >
->>>>>>> refs/remotes/origin/main
+        >
 
         <EditText
 

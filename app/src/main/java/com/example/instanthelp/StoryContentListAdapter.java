@@ -12,15 +12,15 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
-public class ListAdapter extends ArrayAdapter {
+public class StoryContentListAdapter extends ArrayAdapter {
 
 
 
     private Activity mContext;
     List<String> storiesList;
 
-    public ListAdapter(Activity mContext, List<String> storiesList)  {
-        super(mContext, R.layout.categories_listed, storiesList);
+    public StoryContentListAdapter(Activity mContext, List<String> storiesList)  {
+        super(mContext, R.layout.stories_listed, storiesList);
         this.mContext = mContext;
         this.storiesList = storiesList;
     }
@@ -29,9 +29,9 @@ public class ListAdapter extends ArrayAdapter {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = mContext.getLayoutInflater();
-        View listItemView = inflater.inflate(R.layout.categories_listed, null, true);
+        View listItemView = inflater.inflate(R.layout.stories_listed, null, true);
 
-        TextView tvStories = listItemView.findViewById(R.id.tvCategories);
+        TextView tvStories = listItemView.findViewById(R.id.tvStories);
 
 
         String stories = storiesList.get(position);
