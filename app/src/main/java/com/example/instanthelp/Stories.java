@@ -23,6 +23,11 @@ public class Stories {
         return body;
     }
 
+    public void setName(String name) {
+        this.category = category;
+        this.body = body;
+    }
+
 
 //    public String getId() {
 //        return id;

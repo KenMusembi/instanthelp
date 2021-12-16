@@ -8,12 +8,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.annotation.NonNull;
@@ -27,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +55,7 @@ public class RetrieveDataActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         categoryListView = findViewById(R.id.categoryListView);
+
         storiesList = new ArrayList<String>();
 
         storiesDBRef = FirebaseDatabase.getInstance().getReference("Stories");
@@ -59,17 +64,12 @@ public class RetrieveDataActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 storiesList.clear();
-
-
-
                 for(DataSnapshot storyDatasnap : dataSnapshot.getChildren()){
                     String stories = storyDatasnap.getKey().toString();
                     storiesList.add(stories);
                 }
-
                 ListAdapter adapter = new ListAdapter(RetrieveDataActivity.this, storiesList);
                 categoryListView.setAdapter(adapter);
-
             }
 
             @Override
@@ -77,8 +77,6 @@ public class RetrieveDataActivity extends AppCompatActivity {
 
             }
         });
-
-
 
         //set itemLong listener on listview item
 
@@ -90,16 +88,9 @@ public class RetrieveDataActivity extends AppCompatActivity {
                 intent.putExtra("category_name", categoryName);
                 startActivity( intent);
                 return false;
-
             }
         });
-
-
-
-
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -130,13 +121,4 @@ public class RetrieveDataActivity extends AppCompatActivity {
 
         }
     }
-
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        FirebaseUser user = mAuth.getCurrentUser();
-//        if (user == null){
-//            startActivity(new Intent(RetrieveDataActivity.this, LoginActivity.class));
-//        }
-//    }
 }

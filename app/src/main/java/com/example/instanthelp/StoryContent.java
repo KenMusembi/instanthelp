@@ -10,13 +10,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,7 +36,8 @@ public class StoryContent extends AppCompatActivity {
     ListView storiesListView;
     List<String> storiesList;
 
-    DatabaseReference storiesDBRef;
+    DatabaseReference storiesDBRef, categoriesDBRef;
+    ArrayList<String> categoryList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,21 +56,19 @@ public class StoryContent extends AppCompatActivity {
         storiesListView = findViewById(R.id.storiesListView);
         storiesList = new ArrayList<String>();
 
+
         storiesDBRef = FirebaseDatabase.getInstance().getReference("Stories").child(categoryName);
 
         storiesDBRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 storiesList.clear();
-
                 for(DataSnapshot storyDatasnap : dataSnapshot.getChildren()){
                     String stories = storyDatasnap.getValue().toString();
                     storiesList.add(stories);
                 }
-
                 StoryContentListAdapter adapter = new StoryContentListAdapter(StoryContent.this, storiesList);
                 storiesListView.setAdapter(adapter);
-
             }
 
             @Override
@@ -81,8 +81,6 @@ public class StoryContent extends AppCompatActivity {
         fab.setOnClickListener(new AdapterView.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
 
                 showUpdateDialog( );
                 // return false;
@@ -95,7 +93,7 @@ public class StoryContent extends AppCompatActivity {
     private void showUpdateDialog( ){
         AlertDialog.Builder mDialog = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
-        View mDialogView = inflater.inflate(R.layout.update_dialog, null);
+        View mDialogView = inflater.inflate(R.layout.add_story_dialog, null);
         mDialog.setView(mDialogView);
 
         //create views references
@@ -103,6 +101,33 @@ public class StoryContent extends AppCompatActivity {
         Button btnUpdate = mDialogView.findViewById(R.id.btnAdd);
 
         mDialog.setTitle("Add a Story");
+
+
+        categoriesDBRef = FirebaseDatabase.getInstance().getReference("Stories");
+
+        categoriesDBRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                categoryList.clear();
+
+                for(DataSnapshot storyDatasnap : dataSnapshot.getChildren()){
+
+                    String categories = storyDatasnap.getKey().toString();
+                    categoryList.add(categories);
+                }
+
+                //call the spinner method
+                Spinner categorySpinner = mDialogView.findViewById(R.id.categorySpinner);
+                ArrayAdapter<String> adapter2 = new ArrayAdapter<>(StoryContent.this, android.R.layout.simple_spinner_item, categoryList);
+                adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                categorySpinner.setAdapter(adapter2);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         mDialog.show();
 
@@ -113,18 +138,15 @@ public class StoryContent extends AppCompatActivity {
                 //now get values from view
 
                 String newStory = etUpdateStory.getText().toString();
-                updateData( newStory);
+
+               //save stories
+                DatabaseReference DbRef = FirebaseDatabase.getInstance().getReference("Stories");
+                Stories stories = new Stories("Depression", newStory);
+                DbRef.setValue(stories);
+                Toast.makeText(StoryContent.this, "Story Added Successfully",Toast.LENGTH_SHORT).show();
                 //kill dialog
             }
         });
-    }
-    //only add category while adding stories
-    private void updateData( String story){
-        //creating database reference
-        DatabaseReference DbRef = FirebaseDatabase.getInstance().getReference("Stories").child(story);
-        Stories stories = new Stories(story, null);
-        DbRef.setValue(stories);
-        Toast.makeText(StoryContent.this, "Story Added Succesfully",Toast.LENGTH_SHORT).show();
     }
 
 }

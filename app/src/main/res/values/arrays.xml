@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="questions">questions</string-array>
+    <string-array name="categories_array">
+        <item>General</item>
+        <item>Suicide</item>
+        <item>Insomnia</item>
+        <item>Depression</item>
+        <item>Schizophrenia</item>
+        <item>Mood Disorder</item>
+        <item>Eating Disorder</item>
+        <item>Anxiety Disorder</item>
+        <item>Psychotic Disorder</item>
+        <item>Personality Disorder</item>
+        <item>Substance Abuse Disorder</item>
+        <item>Obsessive-compulsive Disorder</item>
+        <item>Post-traumatic stress Disorder</item>
+    </string-array>
 </resources>

@@ -18,8 +18,10 @@
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_second.xml" value="0.24682971014492755" />
         <entry key="app/src/main/res/layout/questions_asked.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/simple_spinner_dropdown_item.xml" value="0.17291666666666666" />
+        <entry key="app/src/main/res/layout/simple_spinner_item.xml" value="0.17291666666666666" />
         <entry key="app/src/main/res/layout/stories_listed.xml" value="0.2942708333333333" />
-        <entry key="app/src/main/res/layout/update_dialog.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/update_dialog.xml" value="0.25" />
         <entry key="app/src/main/res/layout/user_msg_rv_item.xml" value="0.335" />
         <entry key="app/src/main/res/menu/main_menu.xml" value="0.20833333333333334" />
         <entry key="app/src/main/res/menu/stories_menu.xml" value="0.20833333333333334" />

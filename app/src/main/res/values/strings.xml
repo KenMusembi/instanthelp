@@ -23,10 +23,10 @@
     <string name="register_here">Register here</string>
     <string name="not_registered_yet">Not registered yet?</string>
     <string name="password">Password</string>
-    <string name="select_a_category_to_read_stories_about">Select a Category to read stories about</string>
+    <string name="select_a_category_to_read_stories_about">Select a category to read stories on</string>
     <string name="add_a_category_for_your_story_here">add a category for your story here...</string>
     <string name="add_story">Add Story</string>
-    <string name="read_stories_from_list_below">Read Stories from list below</string>
+    <string name="read_stories_from_list_below">Read stories from list below</string>
 
 
 </resources>

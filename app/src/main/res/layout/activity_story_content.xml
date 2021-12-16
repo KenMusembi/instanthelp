@@ -34,6 +34,7 @@ tools:context=".StoryContent">
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
+        android:padding="7dp"
         android:text="@string/read_stories_from_list_below"
         android:textSize="19sp"
         />
@@ -42,7 +43,7 @@ tools:context=".StoryContent">
         android:id="@+id/storiesListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="5dp"/>
+        android:padding="3dp"/>
 </LinearLayout>
     <ImageButton
         android:id="@+id/fabAddStory"
