@@ -91,13 +91,14 @@ public class StoryContent extends AppCompatActivity {
     }
 
     private void showUpdateDialog( ){
-        AlertDialog.Builder mDialog = new AlertDialog.Builder(this);
+        AlertDialog mDialog = new AlertDialog.Builder(this).create();
         LayoutInflater inflater = getLayoutInflater();
         View mDialogView = inflater.inflate(R.layout.add_story_dialog, null);
         mDialog.setView(mDialogView);
 
         //create views references
         EditText etUpdateStory = mDialogView.findViewById(R.id.etUpdateStory);
+        Spinner categorySpinner = mDialogView.findViewById(R.id.categorySpinner);
         Button btnUpdate = mDialogView.findViewById(R.id.btnAdd);
 
         mDialog.setTitle("Add a Story");
@@ -117,7 +118,7 @@ public class StoryContent extends AppCompatActivity {
                 }
 
                 //call the spinner method
-                Spinner categorySpinner = mDialogView.findViewById(R.id.categorySpinner);
+
                 ArrayAdapter<String> adapter2 = new ArrayAdapter<>(StoryContent.this, android.R.layout.simple_spinner_item, categoryList);
                 adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 categorySpinner.setAdapter(adapter2);
@@ -138,13 +139,15 @@ public class StoryContent extends AppCompatActivity {
                 //now get values from view
 
                 String newStory = etUpdateStory.getText().toString();
+                String newCategory = categorySpinner.getSelectedItem().toString();
 
                //save stories
-                DatabaseReference DbRef = FirebaseDatabase.getInstance().getReference("Stories");
-                Stories stories = new Stories("Depression", newStory);
+                DatabaseReference DbRef = FirebaseDatabase.getInstance().getReference("Stories").child(newCategory);
+                Stories stories = new Stories("story", newStory);
                 DbRef.setValue(stories);
                 Toast.makeText(StoryContent.this, "Story Added Successfully",Toast.LENGTH_SHORT).show();
                 //kill dialog
+                mDialog.dismiss();
             }
         });
     }
