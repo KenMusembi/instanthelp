@@ -78,16 +78,14 @@ public class RetrieveDataActivity extends AppCompatActivity {
             }
         });
 
-        //set itemLong listener on listview item
-
-        categoryListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        //open stories that have the category name clicked
+        categoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String categoryName = categoryList.get(position);
                 Intent intent = new Intent(RetrieveDataActivity.this, StoryContent.class);
                 intent.putExtra("category_name", categoryName.toString());
                 startActivity( intent);
-                return false;
             }
         });
 
@@ -95,13 +93,10 @@ public class RetrieveDataActivity extends AppCompatActivity {
         fab.setOnClickListener(new AdapterView.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 showUpdateDialog( );
-                // return false;
             }
         });
     }
-
 
     private void showUpdateDialog( ){
         AlertDialog mDialog = new AlertDialog.Builder(this).create();
