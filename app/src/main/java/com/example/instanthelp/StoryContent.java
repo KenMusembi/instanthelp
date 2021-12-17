@@ -101,8 +101,7 @@ public class StoryContent extends AppCompatActivity {
         EditText etUpdateStory = mDialogView.findViewById(R.id.etUpdateStory);
         Spinner categorySpinner = mDialogView.findViewById(R.id.categorySpinner);
         Button btnUpdate = mDialogView.findViewById(R.id.btnAdd);
-
-        mDialog.setTitle("Add a Story");
+        ImageButton dialogButton = mDialogView.findViewById(R.id.btnCancelStoryDialog);
 
         categoriesDBRef = FirebaseDatabase.getInstance().getReference("Categories");
 
@@ -132,14 +131,19 @@ public class StoryContent extends AppCompatActivity {
 
         mDialog.show();
 
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //here we will update data in database
-                //now get values from view
-
-                String newStory = etUpdateStory.getText().toString();
-                String newCategory = categorySpinner.getSelectedItem().toString();
+                String newStory = etUpdateStory.getText().toString().trim();
+                String newCategory = categorySpinner.getSelectedItem().toString().trim();
 
                 if (!TextUtils.isEmpty(newStory)) {
                     //save stories
@@ -161,7 +165,4 @@ public class StoryContent extends AppCompatActivity {
             }
         });
     }
-
-
-
 }

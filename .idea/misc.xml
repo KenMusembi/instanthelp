@@ -5,6 +5,7 @@
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.225" />
         <entry key="app/src/main/res/drawable/cursor.xml" value="0.30564102564102563" />
+        <entry key="app/src/main/res/drawable/ic_add_story.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_chatbot.xml" value="0.25885416666666666" />
         <entry key="app/src/main/res/layout/activity_chatbot.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.27025641025641023" />
@@ -13,8 +14,8 @@
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_retrieve_data.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_story_content.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/add_category_dialog.xml" value="0.2942708333333333" />
-        <entry key="app/src/main/res/layout/add_story_dialog.xml" value="0.2942708333333333" />
+        <entry key="app/src/main/res/layout/add_category_dialog.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/add_story_dialog.xml" value="0.1" />
         <entry key="app/src/main/res/layout/bot_msg_rv_item.xml" value="0.335" />
         <entry key="app/src/main/res/layout/categories_listed.xml" value="0.28177083333333336" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.25" />

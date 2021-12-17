@@ -114,48 +114,62 @@ public class RetrieveDataActivity extends AppCompatActivity {
         //create views references
         EditText etUpdateCategory = mDialogView.findViewById(R.id.etUpdateCategory);
         Button btnUpdate = mDialogView.findViewById(R.id.btnAdd);
-
-        mDialog.setTitle("Add a new Category");
+        ImageButton dialogButton = mDialogView.findViewById(R.id.btnCancelCategoryDialog);
 
         mDialog.show();
+
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //here we will update data in database
-                //now get values from view
-
-                String newCategory = etUpdateCategory.getText().toString();
+                String newCategory = etUpdateCategory.getText().toString().trim();
 
                 if (!TextUtils.isEmpty(newCategory)) {
                     //save category
                     DatabaseReference DbRefC = FirebaseDatabase.getInstance().getReference("Categories");
                     String categoryID = DbRefC.push().getKey();
-                    
+
                     //check if category exists before saving
+                    DbRefC.orderByChild("categoryName").equalTo(newCategory)
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if(snapshot.exists()){
+                                        //category name exists, hence inform user with a toast message
+                                        Toast.makeText(RetrieveDataActivity.this, "category already exists, input another one", Toast.LENGTH_LONG).show();
+                                    } else {
+                                        //category name does not exist, save it
 
-                    Categories category = new Categories(categoryID, newCategory);
-                    DbRefC.child(categoryID).setValue(category);
+                                        Categories category = new Categories(categoryID, newCategory);
+                                        DbRefC.child(categoryID).setValue(category);
 
-                    //display a success toast
-                    Toast.makeText(RetrieveDataActivity.this, "Category Added Successfully", Toast.LENGTH_LONG).show();
+                                        //display a success toast
+                                        Toast.makeText(RetrieveDataActivity.this, "Category Added Successfully", Toast.LENGTH_LONG).show();
 
-                    //kill dialog
-                    mDialog.dismiss();
+                                        //kill dialog
+                                        mDialog.dismiss();                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+
+
                 }else {
                     //if the value is not given displaying a toast
                     Toast.makeText(RetrieveDataActivity.this, "Please enter the category you wish to add", Toast.LENGTH_LONG).show();
                 }
             }
         });
-    }
-
-
-    private void saveCategory(String newCategory) {
-
-
-
-
     }
 
     @Override

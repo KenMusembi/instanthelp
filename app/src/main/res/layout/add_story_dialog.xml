@@ -1,8 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+  <LinearLayout
+      android:padding="12dp"
+      android:id="@+id/llTop"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentEnd="true"
+      android:layout_alignParentTop="true"
+      android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/btnCancelStoryDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/ic_cancel" />
+  </LinearLayout>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:padding="15dp">
+
+    <TextView
+        android:paddingStart="12dp"
+        android:paddingEnd="2dp"
+        android:text="Add a Story"
+        android:textSize="22sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
   <TextView
       android:layout_margin="10dp"
@@ -35,5 +65,6 @@
         android:layout_height="wrap_content"
         android:background="@color/blue"
         android:text="@string/add_story" />
+  </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>
