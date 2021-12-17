@@ -65,13 +65,19 @@ public class StoryContent extends AppCompatActivity {
         storiesDBRef.orderByChild("storyCategory").equalTo(categoryName).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                storiesList.clear();
-                for(DataSnapshot storyDatasnap : dataSnapshot.getChildren()){
-                    String stories = storyDatasnap.child("storyContent").getValue(String.class);
-                    storiesList.add(stories);
+                if(dataSnapshot.exists()){
+                    storiesList.clear();
+                    for(DataSnapshot storyDatasnap : dataSnapshot.getChildren()){
+                        String stories = storyDatasnap.child("storyContent").getValue(String.class);
+                        storiesList.add(stories);
+                    }
+                    StoryContentListAdapter adapter = new StoryContentListAdapter(StoryContent.this, storiesList);
+                    storiesListView.setAdapter(adapter);
+                } else{
+                    Toast.makeText(StoryContent.this, "No stories under this category", Toast.LENGTH_LONG).show();
+                    //set text to an imaginary textview
                 }
-                StoryContentListAdapter adapter = new StoryContentListAdapter(StoryContent.this, storiesList);
-                storiesListView.setAdapter(adapter);
+
             }
 
             @Override
