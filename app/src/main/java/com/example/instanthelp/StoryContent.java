@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -152,7 +154,6 @@ public class StoryContent extends AppCompatActivity {
                     Stories stories = new Stories(storyId, newCategory, newStory);
                     DbRef.child(storyId).setValue(stories);
 
-                    //saveCategory(newCategory);
                     //display a success toast
                     Toast.makeText(StoryContent.this, "Story Added Successfully", Toast.LENGTH_LONG).show();
 
@@ -164,5 +165,35 @@ public class StoryContent extends AppCompatActivity {
                 }
             }
         });
+    }
+    //menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.stories_menu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_home:
+                // User chose the "Settings" item, show the app settings UI...
+                //setContentView(R.layout.categories_listed);
+                startActivity(new Intent(StoryContent.this, MainActivity.class));
+                return true;
+
+            case R.id.action_logout:
+                // User chose the "Favorite" action, mark the current item
+                // as a favorite...
+                //setContentView(R.layout.activity_login);
+                startActivity(new Intent(StoryContent.this, LoginActivity.class));
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 }

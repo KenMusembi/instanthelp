@@ -53,8 +53,7 @@ public class RetrieveDataActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-
-        //consider putting these things in the on start method
+        //consider putting these things in the on start method?
         categoryListView = findViewById(R.id.categoryListView);
 
         categoryList = new ArrayList<String>();
@@ -79,7 +78,6 @@ public class RetrieveDataActivity extends AppCompatActivity {
             }
         });
 
-        //
         //set itemLong listener on listview item
 
         categoryListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
