@@ -2,36 +2,29 @@ package com.example.instanthelp;
 
 public class Stories {
 
-    String category, body;
-    //String id;
+    String storyId, storyCategory, storyContent;
 
-    //added this empty constructor because it was not
-    //letting the line on retrieve class 46 display
+     public Stories() {
+         //this constructor is required
+     }
 
-    // public Stories() {}
-
-    public Stories(String category, String body) {
-        this.category = category;
-        this.body = body;
-     //   this.id = id;
+    public Stories(String storyId, String storyCategory, String storyContent) {
+        this.storyId = storyId;
+         this.storyCategory = storyCategory;
+        this.storyContent = storyContent;
     }
 
-
-
-
-    public String getStory() {
-        return body;
+    //getters for the Story class
+    public String getStoryId(){
+         return storyId;
     }
 
-    public void setName(String name) {
-        this.category = category;
-        this.body = body;
+    public String getStoryCategory(){
+         return storyCategory;
     }
 
-
-//    public String getId() {
-//        return id;
-//    }
-
+    public String getStoryContent(){
+         return storyContent;
+    }
 
 }

@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StoryContent extends AppCompatActivity {
-
 
     FirebaseAuth mAuth;
 
@@ -57,14 +57,15 @@ public class StoryContent extends AppCompatActivity {
         storiesList = new ArrayList<String>();
 
 
-        storiesDBRef = FirebaseDatabase.getInstance().getReference("Stories").child(categoryName);
+        storiesDBRef = FirebaseDatabase.getInstance().getReference("Stories");
 
-        storiesDBRef.addValueEventListener(new ValueEventListener() {
+        //here we use order by and equal to to get all stories under a particular category
+        storiesDBRef.orderByChild("storyCategory").equalTo(categoryName).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 storiesList.clear();
                 for(DataSnapshot storyDatasnap : dataSnapshot.getChildren()){
-                    String stories = storyDatasnap.getValue().toString();
+                    String stories = storyDatasnap.child("storyContent").getValue(String.class);
                     storiesList.add(stories);
                 }
                 StoryContentListAdapter adapter = new StoryContentListAdapter(StoryContent.this, storiesList);
@@ -103,17 +104,16 @@ public class StoryContent extends AppCompatActivity {
 
         mDialog.setTitle("Add a Story");
 
+        categoriesDBRef = FirebaseDatabase.getInstance().getReference("Categories");
 
-        categoriesDBRef = FirebaseDatabase.getInstance().getReference("Stories");
-
-        categoriesDBRef.addValueEventListener(new ValueEventListener() {
+        categoriesDBRef.orderByChild("categoryName").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 categoryList.clear();
 
                 for(DataSnapshot storyDatasnap : dataSnapshot.getChildren()){
 
-                    String categories = storyDatasnap.getKey().toString();
+                    String categories = storyDatasnap.child("categoryName").getValue(String.class);
                     categoryList.add(categories);
                 }
 
@@ -141,15 +141,27 @@ public class StoryContent extends AppCompatActivity {
                 String newStory = etUpdateStory.getText().toString();
                 String newCategory = categorySpinner.getSelectedItem().toString();
 
-               //save stories
-                DatabaseReference DbRef = FirebaseDatabase.getInstance().getReference("Stories").child(newCategory);
-                Stories stories = new Stories("story", newStory);
-                DbRef.setValue(stories);
-                Toast.makeText(StoryContent.this, "Story Added Successfully",Toast.LENGTH_SHORT).show();
-                //kill dialog
-                mDialog.dismiss();
+                if (!TextUtils.isEmpty(newStory)) {
+                    //save stories
+                    DatabaseReference DbRef = FirebaseDatabase.getInstance().getReference("Stories");
+                    String storyId = DbRef.push().getKey();
+                    Stories stories = new Stories(storyId, newCategory, newStory);
+                    DbRef.child(storyId).setValue(stories);
+
+                    //saveCategory(newCategory);
+                    //display a success toast
+                    Toast.makeText(StoryContent.this, "Story Added Successfully", Toast.LENGTH_LONG).show();
+
+                    //kill dialog
+                    mDialog.dismiss();
+                }else {
+                    //if the value is not given displaying a toast
+                    Toast.makeText(StoryContent.this, "Please enter  the story content", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
+
+
 
 }

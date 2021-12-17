@@ -3,6 +3,7 @@ package com.example.instanthelp;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +17,6 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.annotation.NonNull;
@@ -30,7 +30,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +39,9 @@ public class RetrieveDataActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
 
     ListView categoryListView;
-    List<String> storiesList;
+    List<String> categoryList;
 
-    DatabaseReference storiesDBRef;
+    DatabaseReference categoriesDBRef;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,21 +53,23 @@ public class RetrieveDataActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+
+        //consider putting these things in the on start method
         categoryListView = findViewById(R.id.categoryListView);
 
-        storiesList = new ArrayList<String>();
+        categoryList = new ArrayList<String>();
 
-        storiesDBRef = FirebaseDatabase.getInstance().getReference("Stories");
+        categoriesDBRef = FirebaseDatabase.getInstance().getReference("Categories");
 
-        storiesDBRef.addValueEventListener(new ValueEventListener() {
+        categoriesDBRef.orderByChild("categoryName").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                storiesList.clear();
+                categoryList.clear();
                 for(DataSnapshot storyDatasnap : dataSnapshot.getChildren()){
-                    String stories = storyDatasnap.getKey().toString();
-                    storiesList.add(stories);
+                    String stories = storyDatasnap.child("categoryName").getValue(String.class);
+                    categoryList.add(stories);
                 }
-                ListAdapter adapter = new ListAdapter(RetrieveDataActivity.this, storiesList);
+                ListAdapter adapter = new ListAdapter(RetrieveDataActivity.this, categoryList);
                 categoryListView.setAdapter(adapter);
             }
 
@@ -78,18 +79,83 @@ public class RetrieveDataActivity extends AppCompatActivity {
             }
         });
 
+        //
         //set itemLong listener on listview item
 
         categoryListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                String categoryName = storiesList.get(position);
+                String categoryName = categoryList.get(position);
                 Intent intent = new Intent(RetrieveDataActivity.this, StoryContent.class);
-                intent.putExtra("category_name", categoryName);
+                intent.putExtra("category_name", categoryName.toString());
                 startActivity( intent);
                 return false;
             }
         });
+
+        ImageButton fab = findViewById(R.id.fabAddCategory);
+        fab.setOnClickListener(new AdapterView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                showUpdateDialog( );
+                // return false;
+            }
+        });
+    }
+
+
+    private void showUpdateDialog( ){
+        AlertDialog mDialog = new AlertDialog.Builder(this).create();
+        LayoutInflater inflater = getLayoutInflater();
+        View mDialogView = inflater.inflate(R.layout.add_category_dialog, null);
+        mDialog.setView(mDialogView);
+
+        //create views references
+        EditText etUpdateCategory = mDialogView.findViewById(R.id.etUpdateCategory);
+        Button btnUpdate = mDialogView.findViewById(R.id.btnAdd);
+
+        mDialog.setTitle("Add a new Category");
+
+        mDialog.show();
+
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //here we will update data in database
+                //now get values from view
+
+                String newCategory = etUpdateCategory.getText().toString();
+
+                if (!TextUtils.isEmpty(newCategory)) {
+                    //save category
+                    DatabaseReference DbRefC = FirebaseDatabase.getInstance().getReference("Categories");
+                    String categoryID = DbRefC.push().getKey();
+                    
+                    //check if category exists before saving
+
+                    Categories category = new Categories(categoryID, newCategory);
+                    DbRefC.child(categoryID).setValue(category);
+
+                    //display a success toast
+                    Toast.makeText(RetrieveDataActivity.this, "Category Added Successfully", Toast.LENGTH_LONG).show();
+
+                    //kill dialog
+                    mDialog.dismiss();
+                }else {
+                    //if the value is not given displaying a toast
+                    Toast.makeText(RetrieveDataActivity.this, "Please enter the category you wish to add", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+
+    private void saveCategory(String newCategory) {
+
+
+
+
     }
 
     @Override

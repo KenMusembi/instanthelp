@@ -49,6 +49,18 @@
         android:layout_height="match_parent"
         android:padding="5dp"/>
 </LinearLayout>
-
+    <ImageButton
+        android:id="@+id/fabAddCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        app:tint="@color/grey"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:src="@drawable/ic_add_story"
+        android:textColor="@color/white"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/roundcorner"/>
 
 </RelativeLayout>
