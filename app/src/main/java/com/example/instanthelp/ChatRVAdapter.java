@@ -14,21 +14,22 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 
 /*
-Recycler View for the Chat feature
-What does a recycler view do?
+RecyclerView for the Chat feature
+RecyclerView makes it easy to efficiently display large sets of data.
  */
 public class ChatRVAdapter extends RecyclerView.Adapter {
 
-    //ArrayList and context can be final? what does final mean anyway
+    //provide a reference to the type of views used, i.e arraylist and context
     private ArrayList<ChatsModel> chatsModelArrayList;
     private Context context;
 
-    //Condtructor for the ChatRVAdapter class, loaded with arraylist and context
+    //Constructor for the ChatRVAdapter class, loaded with arraylist and context
     public ChatRVAdapter(ArrayList<ChatsModel> chatsModelArrayList, Context context) {
         this.chatsModelArrayList = chatsModelArrayList;
         this.context = context;
     }
 
+    //The ViewHolder is a wrapper around a View that contains the layout for an individual item in the list.
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -44,7 +45,7 @@ public class ChatRVAdapter extends RecyclerView.Adapter {
                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.bot_msg_rv_item, parent, false);
                return new BotViewHolder(view);
        }
-       //why am i returning null when there is @NonNull
+       //returning null because we only have two views of interest
        return null;
     }
 
@@ -67,7 +68,10 @@ public class ChatRVAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        //this method returns the number of items on the chats array list
+        /*
+        this method returns the number of items on the chats array list
+        to determine when there are no more items that can be displayed.
+        */
         return chatsModelArrayList.size();
     }
 
@@ -95,9 +99,7 @@ public class ChatRVAdapter extends RecyclerView.Adapter {
 
     //the bot view holder
     public static class BotViewHolder extends RecyclerView.ViewHolder{
-
         TextView botMsgTV;
-
         public BotViewHolder(@NonNull View itemView) {
             super(itemView);
             botMsgTV = itemView.findViewById(R.id.idTVBot);

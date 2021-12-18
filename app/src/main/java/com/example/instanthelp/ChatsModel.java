@@ -1,5 +1,6 @@
 package com.example.instanthelp;
 
+//Model for Chats, with message and sender parameters
 public class ChatsModel {
     private String message;
     private String sender;

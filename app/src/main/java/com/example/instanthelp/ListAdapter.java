@@ -12,11 +12,10 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
+//adapter for the categories array list
 public class ListAdapter extends ArrayAdapter {
 
-
-
-    private Activity mContext;
+    Activity mContext;
     List<String> storiesList;
 
     public ListAdapter(Activity mContext, List<String> storiesList)  {
@@ -33,13 +32,11 @@ public class ListAdapter extends ArrayAdapter {
 
         TextView tvStories = listItemView.findViewById(R.id.tvCategories);
 
-
         String stories = storiesList.get(position);
 
-        tvStories.setText(stories.toString());
+        tvStories.setText(stories);
 
         return listItemView;
-        // super.getView(position, convertView, parent);
     }
 
 }

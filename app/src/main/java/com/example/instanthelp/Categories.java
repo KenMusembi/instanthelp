@@ -1,5 +1,6 @@
 package com.example.instanthelp;
 
+//categories class, only has id and name attributes
 public class Categories {
 
     String categoryID, categoryName;
@@ -8,6 +9,7 @@ public class Categories {
          //this constructor is required
      }
 
+     //overloaded constructor
     public Categories(String categoryID, String categoryName) {
          this.categoryID= categoryID;
          this.categoryName = categoryName;

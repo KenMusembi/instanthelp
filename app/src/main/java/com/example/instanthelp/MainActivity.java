@@ -46,14 +46,11 @@ import retrofit2.http.Url;
 public class MainActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
-
     private RecyclerView chatsRV;
     private EditText userMsgEdt;
     private ImageButton sendMsgFAB;
     private final String BOT_KEY = "bot";
     private final String USER_KEY = "user";
-
-    //private RequestQueue mRequestQueue;
 
     private ArrayList<ChatsModel> chatsModelArrayList;
     private ChatRVAdapter chatRVAdapter;
@@ -63,17 +60,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatbot);
 
+        //set custom toolbar
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         myToolbar.showContextMenu(1, 1);
         myToolbar.getMenu();
 
+        //set custom menu as the main menu
         myToolbar.inflateMenu(R.menu.main_menu);
 
         setSupportActionBar(myToolbar);
 
         mAuth = FirebaseAuth.getInstance();
 
-        chatsRV = findViewById(R.id.idRVChats);
+        RecyclerView chatsRV = findViewById(R.id.idRVChats);
         userMsgEdt = findViewById(R.id.idEdtMessage);
         sendMsgFAB = findViewById(R.id.idFABSend);
 
@@ -83,33 +82,48 @@ public class MainActivity extends AppCompatActivity {
         chatsRV.setLayoutManager(manager);
         chatsRV.setAdapter(chatRVAdapter);
 
+        //when send message button is clicked, check if message string is empty
         sendMsgFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(userMsgEdt.getText().toString().isEmpty()){
-                    Toast.makeText(MainActivity.this, "Please enter your message", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Please enter your message", Toast.LENGTH_LONG).show();
                     return;
                 }
+                //if not empty, fire the getResponse message
                 getResponse(userMsgEdt.getText().toString());
                 userMsgEdt.setText("");
             }
         });
 
     }
+
+    //this getResponse method returns the bot response
     private void getResponse(String message){
         chatsModelArrayList.add(new ChatsModel(message, USER_KEY));
         chatRVAdapter.notifyDataSetChanged();
+
+        //url with message to the brain shop api
         String url = "http://api.brainshop.ai/get?bid=161555&key=Bgc0Zn95r2hNj9md&uid=[uid]&msg="+message;
+
+        //base url for the brain shop api
         String BASE_URL = "http://api.brainshop.ai/";
+
+        //retrofit builder that takes baseurl
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+        //a new retrofit api object
         RetrofitAPI retrofitAPI = retrofit.create(RetrofitAPI.class);
+
+        //call the retrofit api with the message model, and enqueue
         Call<MSGModel> call = retrofitAPI.getMessage(url);
         call.enqueue(new Callback<MSGModel>() {
             @Override
             public void onResponse(Call<MSGModel> call, Response<MSGModel> response) {
+
+                //if call is successful, get the message
                 if(response.isSuccessful()){
                     MSGModel model = response.body();
                     chatsModelArrayList.add(new ChatsModel(model.getCnt(), BOT_KEY));
